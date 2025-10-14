@@ -13,10 +13,10 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
 
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+    if (!OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is not configured');
     }
 
     // System prompt for Mumbai Mitr - warm, friendly, and knowledgeable
@@ -44,28 +44,28 @@ Response style:
 
 Remember: You're a friend helping someone discover the magic of Mumbai!`;
 
-    console.log('Sending chat request to Lovable AI');
+    console.log('Sending chat request to OpenAI Chat Completions');
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
-          ...messages
+          ...(Array.isArray(messages) ? messages : [])
         ],
-        temperature: 0.8,
-        max_tokens: 800,
+        temperature: 0.7,
+        max_tokens: 800
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Lovable AI error:', response.status, errorText);
+      console.error('OpenAI error:', response.status, errorText);
       
       if (response.status === 429) {
         return new Response(
@@ -74,22 +74,15 @@ Remember: You're a friend helping someone discover the magic of Mumbai!`;
         );
       }
       
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: 'AI service limit reached. Please contact support.' }),
-          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      throw new Error(`AI Gateway error: ${response.status}`);
+      throw new Error(`OpenAI API error: ${response.status}`);
     }
 
     const data = await response.json();
-    console.log('Received response from Lovable AI');
+    console.log('Received response from OpenAI');
 
     return new Response(
       JSON.stringify({ 
-        message: data.choices[0].message.content 
+        message: data.choices?.[0]?.message?.content ?? ''
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

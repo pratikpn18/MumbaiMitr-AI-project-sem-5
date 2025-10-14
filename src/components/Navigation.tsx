@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Home, MessageCircle, Map, Calendar, Compass, Crown, LogOut, User } from "lucide-react";
+import { Home, MessageCircle, Map, Calendar, Compass, LogOut, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 export const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, signOut, isPremium } = useAuth();
+  const { user, signOut } = useAuth();
   
   const navItems = [
     { path: "/", label: "Home", icon: Home },
@@ -23,7 +22,6 @@ export const Navigation = () => {
     { path: "/explore", label: "Explore", icon: Compass },
     { path: "/map", label: "Map", icon: Map },
     { path: "/itinerary", label: "Itinerary", icon: Calendar },
-    { path: "/premium", label: "Premium", icon: Crown },
   ];
 
   const handleSignOut = async () => {
@@ -66,34 +64,15 @@ export const Navigation = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="gap-2">
                     <User className="w-4 h-4" />
-                    {isPremium && (
-                      <Badge className="bg-premium-gradient text-white border-0 px-2 py-0 text-xs">
-                        ⭐ Premium
-                      </Badge>
-                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>
                     <div className="flex flex-col gap-1">
                       <span className="text-sm font-medium">{user.email}</span>
-                      {isPremium && (
-                        <Badge className="bg-premium-gradient text-white border-0 w-fit">
-                          ⭐ Premium
-                        </Badge>
-                      )}
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {!isPremium && (
-                    <>
-                      <DropdownMenuItem onClick={() => navigate('/premium')}>
-                        <Crown className="w-4 h-4 mr-2" />
-                        Upgrade to Premium
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="w-4 h-4 mr-2" />
                     Sign Out
@@ -131,27 +110,15 @@ export const Navigation = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="w-9 h-9 relative">
                     <User className="w-4 h-4" />
-                    {isPremium && (
-                      <span className="absolute -top-1 -right-1 text-xs">⭐</span>
-                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>
                     <div className="flex flex-col gap-1">
                       <span className="text-sm font-medium truncate">{user.email}</span>
-                      {isPremium && (
-                        <Badge className="bg-premium-gradient text-white border-0 w-fit text-xs">
-                          ⭐ Premium
-                        </Badge>
-                      )}
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/premium')}>
-                    <Crown className="w-4 h-4 mr-2" />
-                    {isPremium ? 'Premium Status' : 'Upgrade'}
-                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/itinerary')}>
                     <Calendar className="w-4 h-4 mr-2" />
                     My Itineraries

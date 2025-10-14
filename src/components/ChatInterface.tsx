@@ -69,7 +69,7 @@ export const ChatInterface = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
@@ -118,7 +118,7 @@ export const ChatInterface = () => {
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyDown}
               placeholder="Ask me about Mumbai..."
               disabled={isLoading}
               className="flex-1"
