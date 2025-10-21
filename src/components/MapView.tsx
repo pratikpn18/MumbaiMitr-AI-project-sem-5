@@ -69,11 +69,13 @@ export const MapView = ({ pois, center = [19.0760, 72.8777], zoom = 12 }: MapVie
             ${poi.area}
           </p>
           <p class="text-sm text-gray-700 mb-3">${poi.description.substring(0, 120)}${poi.description.length > 120 ? '...' : ''}</p>
-          <a 
-            href="/chat?poi=${encodeURIComponent(poi.name)}" 
-            class="inline-block px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors"
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(poi.name + ', ' + poi.area + ', Mumbai, India')}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors shadow-md hover:shadow-lg"
           >
-            View More →
+            View on Google Maps →
           </a>
         </div>
       `, {
