@@ -11,7 +11,6 @@ import MapPage from "./pages/MapPage";
 import Itinerary from "./pages/Itinerary";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
-import Premium from "./pages/Premium";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,7 +29,6 @@ const App = () => (
             <Route path="/explore" element={<Explore />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/itinerary" element={<Itinerary />} />
-            <Route path="/premium" element={<Premium />} />
             <Route path="/admin" element={<Admin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

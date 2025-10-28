@@ -10,8 +10,6 @@ interface AuthContextType {
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
-  isPremium: boolean;
-  checkPremiumStatus: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,30 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isPremium, setIsPremium] = useState(false);
   const { toast } = useToast();
-
-  const checkPremiumStatus = async () => {
-    if (!user) {
-      setIsPremium(false);
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'premium')
-        .maybeSingle();
-
-      if (error) throw error;
-      setIsPremium(!!data);
-    } catch (error) {
-      console.error('Error checking premium status:', error);
-      setIsPremium(false);
-    }
-  };
 
   useEffect(() => {
     // Set up auth state listener
@@ -66,9 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      checkPremiumStatus();
-    }
+    // Premium features removed; no role checks needed
   }, [user]);
 
   const signUp = async (email: string, password: string, fullName: string) => {
@@ -152,8 +125,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signUp,
         signIn,
         signOut,
-        isPremium,
-        checkPremiumStatus,
       }}
     >
       {children}
