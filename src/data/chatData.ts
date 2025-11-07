@@ -1,4 +1,4 @@
-hexport interface ChatData {
+export interface ChatData {
   question: string;
   answer: string;
   keywords: string[];
