@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/mumbai-hero.jpg";
 
 const Index = () => {
-  const { user, isPremium } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen">
@@ -83,15 +83,9 @@ const Index = () => {
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-xl transition-shadow border-premium-gold/20">
+            <Card className="hover:shadow-xl transition-shadow">
               <CardHeader>
-                <div className="flex items-center justify-between mb-4">
-                  <Calendar className="w-12 h-12 text-accent" />
-                  <Badge className="bg-premium-gradient text-white border-0 text-xs">
-                    <Star className="w-3 h-3 mr-1" />
-                    Premium
-                  </Badge>
-                </div>
+                <Calendar className="w-12 h-12 text-accent mb-4" />
                 <CardTitle>Custom Itineraries</CardTitle>
                 <CardDescription>
                   Get AI-generated multi-day trip suggestions with premium recommendations
@@ -109,18 +103,12 @@ const Index = () => {
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-xl transition-shadow border-premium-gold/20">
+            <Card className="hover:shadow-xl transition-shadow">
               <CardHeader>
-                <div className="flex items-center justify-between mb-4">
-                  <Compass className="w-12 h-12 text-secondary" />
-                  <Badge className="bg-premium-gradient text-white border-0 text-xs">
-                    <Star className="w-3 h-3 mr-1" />
-                    Premium
-                  </Badge>
-                </div>
+                <Compass className="w-12 h-12 text-secondary mb-4" />
                 <CardTitle>Hidden Gems & Resorts</CardTitle>
                 <CardDescription>
-                  Unlock exclusive local secrets, luxury hotels, and premium experiences
+                  Discover exclusive local secrets, luxury hotels, and premium experiences
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -138,26 +126,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Premium CTA */}
-      {!isPremium && (
-        <section className="py-16 px-4 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6">
-              <Crown className="w-16 h-16 text-premium-gold animate-pulse" />
-            </div>
-            <h2 className="text-4xl font-bold mb-4">Unlock the Full Mumbai Experience</h2>
-            <p className="text-xl mb-8 text-muted-foreground">
-              Get multi-day itineraries, hidden gems, resort recommendations, and priority support
-            </p>
-            <Link to="/premium">
-              <Button size="lg" className="bg-premium-gradient hover:opacity-90 text-white border-0 text-lg">
-                <Sparkles className="mr-2" />
-                Explore Premium Features
-              </Button>
-            </Link>
-          </div>
-        </section>
-      )}
+
 
       {/* Quick Links */}
       <section className="py-20 px-4">

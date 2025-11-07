@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { findBestMatch } from "@/data/chatData";
 import { toast } from "sonner";
 
 interface Message {
@@ -38,27 +38,21 @@ export const ChatInterface = () => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('mumbai-chat', {
-        body: { messages: [...messages, userMessage] }
-      });
+      // Simulate API delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      if (error) throw error;
-
-      if (data.error) {
-        toast.error(data.error);
-        return;
-      }
+      const response = findBestMatch(input);
 
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.message
+        content: response
       };
 
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Chat error:', error);
       toast.error("Failed to get response. Please try again.");
-      
+
       // Add fallback response
       setMessages(prev => [...prev, {
         role: "assistant",
@@ -77,16 +71,16 @@ export const ChatInterface = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col">
+    <Card className="w-full max-w-4xl mx-auto min-h-[600px] flex flex-col">
       <CardHeader className="border-b bg-gradient-to-r from-primary/10 to-secondary/10">
         <CardTitle className="flex items-center gap-2">
           <span className="text-2xl">🏙️</span>
           Mumbai Mitr - Your AI Tour Guide
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col p-0">
-        <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-          <div className="space-y-4">
+      <CardContent className="flex-1 flex flex-col p-0 min-h-0">
+        <ScrollArea className="flex-1 p-4 min-h-0" ref={scrollRef}>
+          <div className="space-y-4 pb-4">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -113,7 +107,7 @@ export const ChatInterface = () => {
             )}
           </div>
         </ScrollArea>
-        <div className="p-4 border-t">
+        <div className="p-4 border-t flex-shrink-0">
           <div className="flex gap-2">
             <Input
               value={input}
